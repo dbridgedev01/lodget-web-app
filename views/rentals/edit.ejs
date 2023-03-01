@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Rental</title>
+</head>
+<body>
+    <form action="/rentals/<%= lodge._id %>?_method=PUT" method="post">
+        <div>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="lodge[title]" value="<%= lodge.title %>">
+        </div>
+        <div>
+            <label for="location">Location</label>
+            <input type="text" id="location" name="lodge[location]" value="<%= lodge.location %>">
+        </div>
+        <div>
+            <label for="description">Description</label>
+            <input type="text" id="description" name="lodge[description]" value="<%= lodge.description %>">
+        </div>
+        <button>Update Rental</button>
+    </form>
+    <footer>
+        <a href="/rentals">All Rentals</a>
+    </footer>
+</body>
+</html>
