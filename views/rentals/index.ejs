@@ -1,20 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rentals</title>
-</head>
-<body>
-    <h1>All Rentals</h1>
-    <div>
-        <a href="/rentals/new">Create a Rental</a>
+<% layout('layouts/boilerplate')%>
+
+<h1>All Rentals</h1>
+<div>
+    <a href="/rentals/new">Add Rental</a>
+</div>
+<% for (let lodge of lodgeList){%>
+<div class="card" mb-3>
+    <div class="row">
+        <div class="col-md-4">
+            <img class="img-fluid" alt="" src="<%=lodge.image%>">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title"><%= lodge.title %> </h5>
+                <p class="card-text"><%= lodge.description %></p>
+                <p class="card-text">
+                    <small class="text-muted"><%= lodge.location%></small>
+                </p>
+                <a class="btn btn-primary" href="/rentals/<%=lodge._id%>">View <%=lodge.title%></a>
+            </div>
+        </div>
     </div>
-    <ul>
-        <% for (const lodge of lodgeList) { %>
-         <a href="/rentals/<%= lodge._id %>"><li><%= lodge.title %></li></a>
-            <% } %>
-    </ul>
-</body>
-</html>
+</div>
+<% }%>

@@ -5,9 +5,11 @@ require("dotenv").config();
 const Lodge = require("./models/lodge");
 const methodOverride = require('method-override');
 const { findByIdAndUpdate } = require("./models/lodge");
+const ejsMate = require("ejs-mate");
 
 const app = express();
 
+app.engine("ejs", ejsMate)
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
