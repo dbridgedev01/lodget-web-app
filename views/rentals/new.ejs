@@ -2,31 +2,31 @@
 <div class="row">
     <h1 class="text-center">New Rental</h1>
     <div class="col-6 offset-3">
-        <form action="/rentals" method="POST">
+        <form action="/rentals" method="POST" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
-                <input class="form-control" type="text" id="title" name="lodge[title]">
+                <input class="form-control" type="text" id="title" name="lodge[title]" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="location">Location</label>
-                <input class="form-control" type="text" id="location" name="lodge[location]">
+                <input class="form-control" type="text" id="location" name="lodge[location]" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="image">Image Url</label>
-                <input class="form-control" type="text" id="image" name="lodge[image]">
+                <input class="form-control" type="text" id="image" name="lodge[image]" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="price">Rental Price</label>
                 <div class="input-group">
                     <span class="input-group-text" id="price-label">₹</span>
                     <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
-                        aria-describedby="price-label" name="lodge[price]">
+                        aria-describedby="price-label" name="lodge[price]" required>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" id="description" name="lodge[description]"></textarea>
+                <textarea class="form-control" type="text" id="description" name="lodge[description]" required></textarea>
             </div>
             <div class="mb-3">
                 <button class="btn btn-success">Add Rental</button>
