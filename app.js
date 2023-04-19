@@ -13,6 +13,8 @@ const ExpressErrorHandler = require("./utils/ExpressErrorHandler");
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const MongoDBStore = require("connect-mongo")(session);
+
 const app = express();
 
 app.engine("ejs", ejsMate)
@@ -23,8 +25,39 @@ app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, "public")));
 
+// Database Connection
+const DB_URL = process.env.DB_URL || "mongodb://127.0.0.1:27017/LodgetDB";
+
+mongoose.set("strictQuery", true);
+mongoose
+  .connect(DB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected To Database.");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+
+const secret = process.env.SESSION_SECRET || "SECRET_KEY";
+
+const store = new MongoDBStore({
+  url: DB_URL,
+  secret,
+  touchAfter: 24 * 60 * 60
+});
+
+store.on("error", function (e) {
+  console.log("SESSION STORE ERROR", e)
+})
+
+
 const sessionConfig = {
-  secret: "SECRET_KEY",
+  store,
+  secret: secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -57,20 +90,6 @@ const userRoutes = require('./routes/users');
 app.use('/', userRoutes);
 app.use("/rentals", rentalRoutes);
 app.use("/rentals/:id/reviews", reviewRoutes);
-
-// Database Connection
-mongoose.set("strictQuery", true);
-mongoose
-  .connect(process.env.DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connected To Database.");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 
 
 app.get("/", (req, res) => {
