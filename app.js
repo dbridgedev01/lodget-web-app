@@ -56,11 +56,6 @@ app.use('/', userRoutes);
 app.use("/rentals", rentalRoutes);
 app.use("/rentals/:id/reviews", reviewRoutes);
 
-
-app.get("/", (req, res) => {
-  res.render("home");
-});
-
 // Database Connection
 mongoose.set("strictQuery", true);
 mongoose
@@ -76,6 +71,11 @@ mongoose
   });
 
 
+app.get("/", (req, res) => {
+  res.render("home");
+});
+
+
 app.all("*", (req, res, next) => {
   next(new ExpressErrorHandler(404, "Page Not Found."));
 })
@@ -84,9 +84,11 @@ app.use((err, req, res, next) => {
   const {statusCode=500} = err;
   if(!err.message) err.message = "Something Went Wrong";
   res.status(statusCode).render("error", {err})
-})
+});
+
+
 
 // Server
 app.listen(3000, () => {
-  console.log("Server Started, Listening on Port 3000.");
+  console.log("Server Started, Listening on Port 3000: http://localhost:3000/");
 });
