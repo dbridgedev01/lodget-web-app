@@ -1,7 +1,10 @@
+if (process.env.NODE_ENV !== "production") {
+  require('dotenv').config();
+}
+
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-require("dotenv").config();
 const methodOverride = require('method-override');
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
@@ -10,7 +13,6 @@ const ExpressErrorHandler = require("./utils/ExpressErrorHandler");
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-
 const app = express();
 
 app.engine("ejs", ejsMate)

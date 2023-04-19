@@ -1,4 +1,5 @@
 const Lodge = require("../models/lodge");
+const { cloudinary } = require("../cloudinary");
 
 module.exports.renderIndex = async (req, res) => {
 
@@ -9,6 +10,7 @@ module.exports.renderIndex = async (req, res) => {
 module.exports.createRental = async (req, res, next) => {
   
     const lodge = new Lodge(req.body.lodge);
+    lodge.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     lodge.author = req.user._id;
     await lodge.save();
     req.flash("success", "Successfully Created A New Rental.");
@@ -40,7 +42,18 @@ module.exports.getRentalById = async (req, res) => {
 
 module.exports.updateRental = async(req, res) => {
     const {id} = req.params;
-    await Lodge.findByIdAndUpdate(id, req.body.lodge);
+    const lodge = await Lodge.findByIdAndUpdate(id, req.body.lodge);
+    const images = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    lodge.images.push(...images);
+    await lodge.save();
+    
+    if (req.body.deleteImages) {
+      for (let filename of req.body.deleteImages) {
+          await cloudinary.uploader.destroy(filename);
+      }
+      await lodge.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+  }
+  
     req.flash("success", "Successfully Updated The Rental.");
     res.redirect(`/rentals/${id}`)
   };

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 
 const catchAsync = require('../utils/handleAsyncErrors');
 
@@ -11,7 +12,7 @@ router.route('/register')
 
 router.route('/login')
     .get(userController.renderLoginForm)
-    .post(userController.loginUser);
+    .post(passport.authenticate('local', { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true}), userController.loginUser);
 
 router.get('/logout', userController.logoutUser);
 
